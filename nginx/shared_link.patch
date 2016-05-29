@@ -1,0 +1,4 @@
+177c177
+<         MAIN_LINK="-Wl,-E"
+---
+>         MAIN_LINK="-Wl,-E -shared"
