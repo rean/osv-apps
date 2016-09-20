@@ -16,8 +16,8 @@ usr_files.add('${OSV_BASE}/modules/cli').to('/cli') \
 
 # Force the cli to be the starting command so we get the nginx bits on the
 # image and we can debug the nginx start up
-full = api.run('/cli/cli.so')
-default = full
+#full = api.run('/cli/cli.so')
+#default = full
 
-#default = api.run('/nginx-osv.so -c /usr/local/nginx/conf/nginx.conf')
+default = api.run('/nginx-osv.so -c /usr/local/nginx/conf/nginx.conf')
 
