@@ -1,0 +1,38 @@
+--- standalone.xml.old	2016-10-15 20:45:37.873218620 -0700
++++ standalone.xml.new	2016-10-15 20:40:38.498715322 -0700
+@@ -12,7 +12,7 @@
+         <extension module="org.jboss.as.jmx"/>
+         <extension module="org.jboss.as.jpa"/>
+         <extension module="org.jboss.as.jsf"/>
+-        <extension module="org.jboss.as.logging"/>
++        <!--<extension module="org.jboss.as.logging"/>-->
+         <extension module="org.jboss.as.mail"/>
+         <extension module="org.jboss.as.naming"/>
+         <extension module="org.jboss.as.pojo"/>
+@@ -79,7 +79,8 @@
+         </access-control>
+     </management>
+     <profile>
+-        <subsystem xmlns="urn:jboss:domain:logging:3.0">
++      <!--
++          <subsystem xmlns="urn:jboss:domain:logging:3.0">
+             <console-handler name="CONSOLE">
+                 <level name="INFO"/>
+                 <formatter>
+@@ -125,7 +126,8 @@
+             <formatter name="COLOR-PATTERN">
+                 <pattern-formatter pattern="%K{level}%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n"/>
+             </formatter>
+-        </subsystem>
++            </subsystem>
++      -->
+         <subsystem xmlns="urn:jboss:domain:batch:1.0">
+             <job-repository>
+                 <in-memory/>
+@@ -404,4 +406,4 @@
+             <remote-destination host="localhost" port="25"/>
+         </outbound-socket-binding>
+     </socket-binding-group>
+-</server>
+\ No newline at end of file
++</server>
