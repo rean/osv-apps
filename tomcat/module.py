@@ -40,3 +40,6 @@ default_old = api.run_java(
         ])
 '''
 default = api.run('/cli/cli.so')
+
+# To start use:
+# sudo scripts/run.py -n -v -V -e "java.so  -cp /usr/tomcat/bin/bootstrap.jar:/usr/tomcat/bin/tomcat-juli.jar -Djava.util.logging.config.file=/usr/tomcat/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager  -Dcatalina.base=/usr/tomcat -Dcatalina.home=/usr/tomcat -Djava.io.tmpdir=/usr/tomcat/temp org.apache.catalina.startup.Bootstrap start"
