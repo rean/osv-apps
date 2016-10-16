@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -e
+
+#http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.tar.gz
+
+MAJOR=10
+VERSION=${MAJOR}.1.0
+
+dir="wildfly-$VERSION.Final"
+archive="$dir.tar.gz"
+
+# Remove build dir
+rm -rf upstream
+rm -rf ROOTFS
+
+mkdir -p upstream
+
+if [ ! -f $archive ]; then
+    wget http://download.jboss.org/wildfly/$VERSION.Final/$archive
+fi
+
+cp $archive upstream
+pushd upstream
+tar xzvf $archive
+pushd $dir
+
+popd # back out of wildfly
+popd # back out of upstream
+
+# Patch standalone.xml to modify the logging config
+patch upstream/$dir/standalone/configuration/standalone.xml < logging.config.patch
+
+mkdir ROOTFS
+mkdir -p ROOTFS/usr/wildfly
+mv upstream/$dir/* ROOTFS/usr/wildfly
+
+cat > usr.manifest <<EOF
+/usr/wildfly/**: \${MODULE_DIR}/ROOTFS/usr/wildfly/**
+EOF
+
+cp usr.manifest ..

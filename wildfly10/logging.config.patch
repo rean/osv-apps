@@ -1,0 +1,31 @@
+--- standalone.xml.old	2016-10-15 22:15:03.769184727 -0700
++++ standalone.xml.new	2016-10-15 22:16:35.144827788 -0700
+@@ -12,7 +12,7 @@
+         <extension module="org.jboss.as.jmx"/>
+         <extension module="org.jboss.as.jpa"/>
+         <extension module="org.jboss.as.jsf"/>
+-        <extension module="org.jboss.as.logging"/>
++        <!--<extension module="org.jboss.as.logging"/>-->
+         <extension module="org.jboss.as.mail"/>
+         <extension module="org.jboss.as.naming"/>
+         <extension module="org.jboss.as.pojo"/>
+@@ -84,7 +84,8 @@
+         </access-control>
+     </management>
+     <profile>
+-        <subsystem xmlns="urn:jboss:domain:logging:3.0">
++      <!--
++          <subsystem xmlns="urn:jboss:domain:logging:3.0">
+             <console-handler name="CONSOLE">
+                 <level name="INFO"/>
+                 <formatter>
+@@ -121,7 +122,8 @@
+             <formatter name="COLOR-PATTERN">
+                 <pattern-formatter pattern="%K{level}%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n"/>
+             </formatter>
+-        </subsystem>
++          </subsystem>
++      -->
+         <subsystem xmlns="urn:jboss:domain:batch-jberet:1.0">
+             <default-job-repository name="in-memory"/>
+             <default-thread-pool name="batch"/>
