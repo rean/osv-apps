@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -e
-MAJOR=8
-VERSION=${MAJOR}.0.15
+#MAJOR=8
+MAJOR=9
+#VERSION=${MAJOR}.0.15
+#VERSION=${MAJOR}.5.6
+VERSION=${MAJOR}.0.0.M11
 
 dir=apache-tomcat-$VERSION
 archive=$dir.tar.gz
@@ -11,16 +14,17 @@ pushd upstream
 wget http://archive.apache.org/dist/tomcat/tomcat-${MAJOR}/v${VERSION}/bin/${archive}
 tar zxvf $archive
 
+# [RG] No patches if we're not using 8.0.15
 pushd $dir
-for p in $(find ../../patches/perf/ -name '*.patch' | sort); do
-    echo "Applying $p"
-    patch -p1 < $p
-done
+#for p in $(find ../../patches/perf/ -name '*.patch' | sort); do
+#    echo "Applying $p"
+#    patch -p1 < $p
+#done
 popd
 
 popd
 
 
-mkdir ROOTFS
+mkdir -p ROOTFS
 mkdir -p ROOTFS/usr/tomcat
 mv upstream/$dir/* ROOTFS/usr/tomcat
