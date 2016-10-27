@@ -1,0 +1,50 @@
+#!/bin/bash
+
+set -x
+set -e
+
+cd "$(dirname "$0")"
+
+if test $# -ne 1
+then
+  echo "usage: $0 <node-version>" 1>&2
+  exit 1
+fi
+
+cd "node-$1"
+
+ed -s node.gyp << EOF
+,s/\(['"]\)executable\1/\1shared_library\1/
+g/'-Wl,--whole-archive/d
+w
+EOF
+
+ed -s common.gypi << EOF
+,s/'cflags':.*'-pthread'/&, '-fPIC'/
+w
+EOF
+
+# Won't work on node 4.6.1, on 4.1.1 there are two defns of uv_barrier_init
+# one that does not use pthreads. In 4.6.1 there's only one defn and it
+# uses pthreads
+#ed -s deps/uv/src/unix/thread.c << EOF
+#/int uv_barrier_init/i
+#endif
+#if 1
+#.
+#w
+#EOF
+
+# Won't work on node 4.6.1
+#ed -s "$(find deps/uv -name uv-unix.h)" <<EOF
+#/#if defined(__APPLE/a
+#endif
+#if 1
+#.
+#w
+#EOF
+
+[ -f deps/v8/src/types.h ] && ed -s deps/v8/src/types.h <<EOF
+,s/nearbyint/rint/
+w
+EOF
