@@ -1,0 +1,47 @@
+#!/bin/bash
+
+set -x
+set -e
+
+cd "$(dirname "$0")"
+
+if test $# -ne 1
+then
+  echo "usage: $0 <node-version>" 1>&2
+  exit 1
+fi
+
+cd "node-$1"
+
+ed -s node.gyp << EOF
+,s/\(['"]\)executable\1/\1shared_library\1/
+g/'-Wl,--whole-archive/d
+w
+EOF
+
+ed -s common.gypi << EOF
+,s/'cflags':.*'-pthread'/&, '-fPIC'/
+w
+EOF
+
+# We do care about this on 7.2.0
+[ -f deps/v8/src/types.h ] && ed -s deps/v8/src/types.h <<EOF
+,s/nearbyint/rint/
+w
+EOF
+
+# Additional nearbyint patches
+[ -f deps/v8/src/types.h ] && ed -s deps/v8/src/arm/simulator-arm.cc <<EOF
+,s/nearbyint/rint/
+w
+EOF
+
+[ -f deps/v8/src/types.h ] && ed -s deps/v8/src/wasm/wasm-external-refs.cc <<EOF
+,s/nearbyint/rint/
+w
+EOF
+
+[ -f deps/v8/src/types.h ] && ed -s deps/v8/src/wasm/wasm-interpreter.cc <<EOF
+,s/nearbyint/rint/
+w
+EOF
