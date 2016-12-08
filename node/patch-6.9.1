@@ -24,33 +24,11 @@ ed -s common.gypi << EOF
 w
 EOF
 
-# Won't work on node 6.9.1 or 4.6.1, on 4.1.1 there are two defns of uv_barrier_init
-# one that does not use pthreads. In 4.6.1 there's only one defn and it
-# uses pthreads
-#ed -s deps/uv/src/unix/thread.c << EOF
-#/int uv_barrier_init/i
-#endif
-#if 1
-#.
-#w
-#EOF
-
-# Won't work on node 4.6.1
-#ed -s "$(find deps/uv -name uv-unix.h)" <<EOF
-#/#if defined(__APPLE/a
-#endif
-#if 1
-#.
-#w
-#EOF
-
-# We do care about this on 6.9.1
 [ -f deps/v8/src/types.h ] && ed -s deps/v8/src/types.h <<EOF
 ,s/nearbyint/rint/
 w
 EOF
 
-# Additional nearbyint patches
 [ -f deps/v8/src/types.h ] && ed -s deps/v8/src/arm/simulator-arm.cc <<EOF
 ,s/nearbyint/rint/
 w
