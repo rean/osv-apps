@@ -29,17 +29,22 @@ EOF
 w
 EOF
 
-[ -f deps/v8/src/types.h ] && ed -s deps/v8/src/arm/simulator-arm.cc <<EOF
+[ -f  deps/v8/src/arm/simulator-arm.cc ] && ed -s deps/v8/src/arm/simulator-arm.cc <<EOF
 ,s/nearbyint/rint/
 w
 EOF
 
-[ -f deps/v8/src/types.h ] && ed -s deps/v8/src/wasm/wasm-external-refs.cc <<EOF
+[ -f deps/v8/src/wasm/wasm-external-refs.cc ] && ed -s deps/v8/src/wasm/wasm-external-refs.cc <<EOF
 ,s/nearbyint/rint/
 w
 EOF
 
-[ -f deps/v8/src/types.h ] && ed -s deps/v8/src/wasm/wasm-interpreter.cc <<EOF
+[ -f deps/v8/src/wasm/wasm-interpreter.cc ] && ed -s deps/v8/src/wasm/wasm-interpreter.cc <<EOF
 ,s/nearbyint/rint/
+w
+EOF
+
+[ -f deps/uv/src/unix/core.c ] && ed -s deps/uv/src/unix/core.c <<EOF
+,s/assert(fd > STDERR_FILENO);/;/
 w
 EOF

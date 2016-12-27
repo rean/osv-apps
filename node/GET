@@ -11,15 +11,14 @@ then
 fi
 
 # Tarball we want
-DL_PACKAGE="v${1}.tar.gz"
-PACKAGE="node-${1}.tar.gz"
+PACKAGE="v${1}.tar.gz"
 
 # Do a conditional get if we don't have the tarball handy
 if [ ! -f ${PACKAGE} ]; then
-    wget "https://github.com/nodejs/node/archive/${DL_PACKAGE}" -O - | tar zxf -
-else
-    tar -xzvf ${PACKAGE}
+    wget "https://github.com/nodejs/node/archive/${PACKAGE}"
 fi
+
+tar -xzvf ${PACKAGE}
 
 echo "$1"
 
