@@ -14,10 +14,11 @@ $(LIB_NODE):
 #VERSION=4.6.1
 #VERSION=6.9.1
 #VERSION=7.0.0
-VERSION=7.2.0
+#VERSION=7.2.0
 module:
 	if test ! -d node-$(VERSION); then ./GET $(VERSION); $(MAKE) NODE_VERSION=$(VERSION); fi
 	echo '/libnode.so: $${MODULE_DIR}/libnode-$(VERSION).so' > usr.manifest
 	: > bootfs.manifest
+	echo '/hello.js: $${MODULE_DIR}/hello.js' >> usr.manifest
 clean:
 	rm -rf node-$(VERSION) usr.manifest bootfs.manifest libnode-$(VERSION).so
