@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -x
+set -e
+
+cd "$(dirname "$0")"
+
+if test $# -ne 1
+then
+  echo "usage: $0 <node-version>" 1>&2
+  exit 1
+fi
+
+cd "node-$1"
+
+ed -s node.gyp << EOF
+,s/\(['"]\)executable\1/\1shared_library\1/
+g/'-Wl,--whole-archive/d
+w
+EOF
+
+ed -s common.gypi << EOF
+,s/'cflags':.*'-pthread'/&, '-fPIC'/
+w
+EOF
+
+[ -f deps/v8/src/types.h ] && ed -s deps/v8/src/types.h <<EOF
+,s/nearbyint/rint/
+w
+EOF
+
+[ -f deps/v8/src/types.h ] && ed -s deps/v8/src/arm/simulator-arm.cc <<EOF
+,s/nearbyint/rint/
+w
+EOF
+
+[ -f deps/v8/src/types.h ] && ed -s deps/v8/src/wasm/wasm-external-refs.h <<EOF
+,s/nearbyint/rint/
+w
+EOF
+
+# OSv always returns the path "/dev/console" for the ttyname for any fd
+# passed in
+# (https://github.com/cloudius-systems/osv/blob/master/libc/unistd/ttyname_r.c)
+# so it's possible for stdin(0), stdout(1) etc. to be passed into uv_tty_init
+# and then closed later in uv_close, which would trigger this assert
+# unnecessarily on OSv
+[ -f deps/uv/src/unix/core.c ] && ed -s deps/uv/src/unix/core.c <<EOF
+,s/assert(fd > STDERR_FILENO);/;/
+w
+EOF
